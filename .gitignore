@@ -1,0 +1,46 @@
+# ─────────────────────────────
+# Terraform
+# ─────────────────────────────
+# Archivos de estado locales
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Archivos del directorio .terraform (providers, módulos descargados, lockfiles locales)
+.terraform/
+.terraform.lock.hcl
+
+# Archivos de plan (resultado de "terraform plan -out")
+*.tfplan
+
+# Variables sensibles o locales
+*.tfvars
+*.tfvars.json
+
+# Archivos temporales
+*.bak
+*.tmp
+*.swp
+*.log
+
+# ─────────────────────────────
+# macOS y VSCode
+# ─────────────────────────────
+.DS_Store
+.vscode/
+.idea/
+
+# ─────────────────────────────
+# Python virtualenvs u otros (por si haces scripts auxiliares)
+# ─────────────────────────────
+venv/
+__pycache__/
+
+# ─────────────────────────────
+# Backups de sistema o de OneDrive
+# ─────────────────────────────
+Thumbs.db
+desktop.ini
+~$*
