@@ -20,8 +20,8 @@ module "vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
+  enable_nat_gateway     = true
+  single_nat_gateway     = true
   one_nat_gateway_per_az = false
 
   create_igw = true
@@ -29,9 +29,9 @@ module "vpc" {
   map_public_ip_on_launch = true
 
   tags = {
-    App        = var.app
-    Env        = var.env
-    Component  = "network"
-    Managed  = "terraform"
+    App       = var.app
+    Env       = var.env
+    Component = "network"
+    Managed   = "terraform"
   }
 }

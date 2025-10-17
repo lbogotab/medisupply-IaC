@@ -25,34 +25,54 @@ variable "az_count" {
 
 # EKS
 
-variable "cluster_version" { 
-  type = string 
-  default = "1.34" 
+variable "cluster_version" {
+  type        = string
+  default     = "1.34"
   description = "Versión de Kubernetes para EKS"
 }
-variable "instance_type" { 
-  type = string 
-  default = "t3.small" 
+variable "instance_type" {
+  type        = string
+  default     = "t3.small"
   description = "Tipo de instancia para el node group"
 }
-variable "min_size" { 
-  type = number 
-  default = 1 
+variable "min_size" {
+  type        = number
+  default     = 1
   description = "Tamaño mínimo del grupo de nodos"
 }
-variable "desired_size" { 
-  type = number 
-  default = 2 
+variable "desired_size" {
+  type        = number
+  default     = 2
   description = "Tamaño deseado del grupo de nodos"
 }
-variable "max_size" { 
-  type = number 
-  default = 4 
+variable "max_size" {
+  type        = number
+  default     = 4
   description = "Tamaño máximo del grupo de nodos"
 }
+variable "ami_type" {
+  type        = string
+  default     = "AL2023_x86_64_STANDARD"
+  description = "Tipo de AMI para los nodos del cluster EKS"
+}
+
 
 #ECR
 variable "repos" {
   type    = list(string)
   default = ["users"]
+}
+
+# DynamoDB (ya la agregamos antes)
+variable "tables" {
+  type = map(object({
+    hash_key         = string
+    range_key        = optional(string)
+    attributes       = map(string)
+    billing_mode     = optional(string, "PAY_PER_REQUEST")
+    ttl_enabled      = optional(bool, false)
+    ttl_attribute    = optional(string)
+    stream_enabled   = optional(bool, false)
+    stream_view_type = optional(string, "NEW_AND_OLD_IMAGES")
+  }))
 }

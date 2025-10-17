@@ -23,4 +23,21 @@ module "eks" {
   min_size      = var.min_size
   desired_size  = var.desired_size
   max_size      = var.max_size
+  ami_type      = var.ami_type
 }
+
+
+# Almacenamiento (DynamoDB)
+module "storage" {
+  source = "../../modules/storage"
+
+  app    = var.app
+  env    = var.env
+  region = var.region
+
+  vpc_id                  = module.vpc.vpc_id
+  private_route_table_ids = module.vpc.private_route_tables
+
+  tables = var.tables
+}
+

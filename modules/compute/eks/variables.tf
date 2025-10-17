@@ -29,19 +29,25 @@ variable "instance_type" {
 }
 
 variable "min_size" {
-    type = number 
-    default = 1 
-    description = "Tamaño mínimo del grupo de nodos"
+  type        = number
+  default     = 1
+  description = "Tamaño mínimo del grupo de nodos"
 }
 
 variable "desired_size" {
-    type = number
-    default = 2
-    description = "Tamaño deseado del grupo de nodos"
+  type        = number
+  default     = 2
+  description = "Tamaño deseado del grupo de nodos"
 }
 
 variable "max_size" {
-    type = number
-    default = 4
-    description = "Tamaño máximo del grupo de nodos"
+  type        = number
+  default     = 4
+  description = "Tamaño máximo del grupo de nodos"
+}
+
+variable "ami_type" {
+  description = "Tipo de AMI para los nodos del cluster EKS"
+  type        = string
+  default     = "AL2023_x86_64_STANDARD"
 }

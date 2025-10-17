@@ -12,11 +12,11 @@ module "eks" {
   cluster_endpoint_public_access  = true
 
   # OIDC para ServiceAccounts (necesario para ALB Controller, ExternalDNS)
-  enable_irsa = true  
+  enable_irsa = true
 
   eks_managed_node_groups = {
     default = {
-      ami_type       = "AL2023_x86_64"
+      ami_type       = var.ami_type
       instance_types = [var.instance_type]
 
       min_size     = var.min_size
