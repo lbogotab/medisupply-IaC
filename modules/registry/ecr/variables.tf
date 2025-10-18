@@ -1,6 +1,6 @@
 variable "app" {
   type        = string
-  description = "Nombre de la app (p. ej., MediSupply)"
+  description = "Nombre de la app (MediSupply)"
 }
 
 variable "env" {

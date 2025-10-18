@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-deployment
+  namespace: default
+  labels:
+    app: users
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users
+  template:
+    metadata:
+      labels:
+        app: users
+    spec:
+      serviceAccountName: fluent-bit # Service account for log forwarding
+      containers:
+        - name: users
+          image: 726264870413.dkr.ecr.us-east-1.amazonaws.com/medisupply-dev/usuarios:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: ENV
+              value: "dev"
+            - name: REGION
+              valueFrom:
+                secretKeyRef:
+                  name: global-secrets
+                  key: region
+            - name: LOG_GROUP_NAME
+              value: "/MediSupply/dev/users"
+            - name: AWS_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: global-secrets
+                  key: region
+            - name: APP_COGNITO_USER_POOL_ID
+              valueFrom:
+                secretKeyRef:
+                  name: global-secrets
+                  key: cognito_user_pool_id
+            - name: COGNITO_CHECK_TOKEN_EXPIRATION
+              value: "True"
+            - name: COGNITO_JWT_HEADER_NAME
+              value: "Authorization"
+            - name: COGNITO_JWT_HEADER_PREFIX
+              value: "Bearer"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-service
+  labels:
+    app: users
+spec:
+  type: ClusterIP
+  selector:
+    app: users
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      name: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: users-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: medisupply
+spec:
+  rules:
+    - host: users.medisupply.dev
+      http:
+        paths:
+          - path: /users
+            pathType: Prefix
+            backend:
+              service:
+                name: users-service
+                port:
+                  number: 80

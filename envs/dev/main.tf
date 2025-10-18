@@ -41,3 +41,25 @@ module "storage" {
   tables = var.tables
 }
 
+# Observability - Logs
+module "logs" {
+  source     = "../../modules/observability/logs"
+  depends_on = [module.eks]
+
+  app = var.app
+  env = var.env
+
+  # Tablas (por si las usas como referencia de nombres, no es obligatorio)
+  microservices     = var.microservices
+  retention_in_days = var.retention_in_days
+
+  # IRSA para Fluent Bit (salen del módulo EKS moderno)
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  oidc_issuer_url   = module.eks.oidc_provider
+
+  # ServiceAccount de Fluent Bit (si usas otros nombres, cámbialos)
+  fluentbit_namespace = var.fluentbit_namespace
+  fluentbit_sa_name   = var.fluentbit_sa_name
+}
+
+

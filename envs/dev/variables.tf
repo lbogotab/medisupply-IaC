@@ -63,7 +63,7 @@ variable "repos" {
   default = ["users"]
 }
 
-# DynamoDB (ya la agregamos antes)
+# DynamoDB
 variable "tables" {
   type = map(object({
     hash_key         = string
@@ -75,4 +75,22 @@ variable "tables" {
     stream_enabled   = optional(bool, false)
     stream_view_type = optional(string, "NEW_AND_OLD_IMAGES")
   }))
+}
+
+# Observability - Logs
+
+# Logs / Observabilidad
+variable "microservices" { type = list(string) }
+variable "retention_in_days" {
+  type    = number
+  default = 30
+}
+variable "fluentbit_namespace" {
+  type    = string
+  default = "kube-system"
+}
+
+variable "fluentbit_sa_name" {
+  type    = string
+  default = "fluent-bit"
 }
